@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { FaTimes, FaBars } from 'react-icons/fa';
 import { Link } from 'react-scroll';
 
 export const NavBar = () => {
-  const [nav, setNav] = useState(false);
+  const [nav] = useState(false);
 
   const email = 'kirca@umich.edu'; 
 
