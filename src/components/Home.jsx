@@ -13,7 +13,7 @@ export const Home = () => {
           <h2 className="text-6xl sm:text-7xl font-bold text-white mb-4">
             Hi, I'm Deniz!
           </h2>
-          <p className="text-2xl text-gray-500 py-4 max-w-md">
+          <p className="text-2xl text-gray-500 font-main py-4 max-w-md">
             I'm a senior studying <span className="font-main text-white">neuroscience</span> and{' '}
             <span className="font-main text-white">computer science</span> at the University of Michigan.
           </p>

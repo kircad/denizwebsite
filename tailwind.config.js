@@ -6,7 +6,8 @@ module.exports = {
   theme: {
     extend: {},
     fontFamily: {
-      main: ["Raleway"]
+      main: ["Raleway"],
+      signature: ['roboto']
     }
   },
   plugins: [],

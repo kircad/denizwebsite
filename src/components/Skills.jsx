@@ -5,7 +5,7 @@ import cpp from '../assets/cpp.png';
 import python from '../assets/python.png';
 import git from '../assets/git.png';
 import matlab from '../assets/matlab.png';
-import vscode from '../assets/vs.png';
+import conda from '../assets/conda.png';
 import js from '../assets/js.png';
 import css from '../assets/css.png';
 import htmlImage from '../assets/html.png';
@@ -49,37 +49,37 @@ export const Skills = () => {
       title: 'Python',
       style: 'shadow-yellow-500',
     },
+    {
+      id: 7,
+      src: matlab,
+      title: 'MATLAB',
+      style: 'shadow-orange-500',
+    },
   ];
 
   const toolsFrameworks = [
     {
-      id: 7,
+      id: 8,
       src: reactImage,
       title: 'React',
       style: 'shadow-blue-600',
     },
     {
-      id: 8,
-      src: vscode,
-      title: 'Visual Studio',
-      style: 'shadow-blue-500',
-    },
-    {
       id: 9,
-      src: git,
-      title: 'Git',
-      style: 'shadow-gray-400',
+      src: conda,
+      title: 'Conda',
+      style: 'shadow-green-500',
     },
     {
       id: 10,
-      src: linux,
-      title: 'Linux',
+      src: git,
+      title: 'Git',
       style: 'shadow-orange-500',
     },
     {
       id: 11,
-      src: matlab,
-      title: 'MATLAB',
+      src: linux,
+      title: 'Linux',
       style: 'shadow-orange-500',
     },
   ];
