@@ -6,19 +6,19 @@ export const Projects = () => {
   const [projects] = useState([
     {
       title: 'NeuroZIP',
-      description: 'NeuroZIP is a user-friendly algorithm for neuroscientists to visualize and compress large amounts of electrophysiology data...',
+      description: "NeuroZIP is an innovative Python package designed to address the critical challenge of spike-sorting in large-scale, multiday electrophysiology datasets. NeuroZIP significantly enhances the efficiency of contemporary spike-sorting algorithms, achieving up to a 40% increase in processing speed while maintaining high accuracy. This performance increase is accomplished through a combination of dimensionality reduction techniques (PCA and UMAP) and unsupervised machine learning algorithms (k-means++ and DBSCAN) to dynamically subsample electrophysiology recordings. The package's effectiveness has been rigorously validated using a custom-built Python testing suite, which evaluates performance across various dataset sizes and complexities. I will be presenting NeuroZIP's capabilities and its potential to accelerate neuroscience research at the 2024 Society for Neuroscience conference in Chicago this October.",
       skills: ['MATLAB', 'Signal Processing', 'Clustering'],
       github: 'https://github.com/kircad/NeuroZIP',
     },
     {
       title: 'SideKick',
-      description: 'SideKick is a project focused on... [Add your description here]',
-      skills: ['MATLAB', 'Signal Processing', 'Clustering'],
+      description: 'SideKick is a Chrome extension utilizing the Gemini 1.5 API for real-time sentiment analysis. SideKick can track emotional states, engagement, and knowledge transfer of up to five meeting participants. Winner of the Google Spotlight Award for Workplace Integration at MHacks x Google 2024',
+      skills: [],
       github: 'https://github.com/kircad/SideKick',
     },
     {
       title: 'MPupil',
-      description: 'MPupil is a pupillary-reflex tracking device that uses pupil + iris diameter, ratio, and pupillary constriction rate to assist physicians in diagnosing neurological conditions...',
+      description: 'MPupil is a tool for physicians to help diagnose neurological conditions ranging from concussions to Multiple Sclerosis. I leveraged computer vision tools from the OpenCV library to create a pupil tracker that can detect pupil-to-iris ratio with an accuracy of 95%.',
       skills: ['Python', 'OpenCV', 'Computer Vision'],
     },
     // Add more projects here...
