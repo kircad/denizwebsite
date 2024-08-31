@@ -33,7 +33,7 @@ export const Home = () => {
   };
 
   return (
-    <div name="home" className="min-h-screen w-full bg-gradient-to-br from-cyan-50 to-blue-100 overflow-hidden">
+    <div name="home" className="min-h-screen w-full">
       <motion.div
         className="max-w-screen-xl mx-auto flex flex-col lg:flex-row items-center justify-center h-full px-4 py-16"
         variants={containerVariants}
