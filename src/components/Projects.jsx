@@ -1,89 +1,120 @@
 import React, { useState } from 'react';
+import { Github, ExternalLink, ChevronDown } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export const Projects = () => {
-  // Sample array of projects
   const [projects] = useState([
     {
       title: 'NeuroZIP',
-      description:
-        'NeuroZIP is a user-friendly algorithm for neuroscientists to visualize and compress large amounts of electrophysiology data, allowing electrophysiology recordings at timescales ranging from days to weeks to be successfully spikesorted, a major roadblock to studying how neurons interact in real-world environments. NeuroZIP is designed to work with most existing template-matching based spikesorting algorithms and uses a variety of clustering and dimensionality-reduction techniques to achieve up to ~20x compression of data up to 12 TB in size.',
+      description: 'NeuroZIP is a user-friendly algorithm for neuroscientists to visualize and compress large amounts of electrophysiology data...',
       skills: ['MATLAB', 'Signal Processing', 'Clustering'],
+      github: 'https://github.com/kircad/NeuroZIP',
+    },
+    {
+      title: 'SideKick',
+      description: 'SideKick is a project focused on... [Add your description here]',
+      skills: ['MATLAB', 'Signal Processing', 'Clustering'],
+      github: 'https://github.com/kircad/SideKick',
     },
     {
       title: 'MPupil',
-      description:
-        'MPupil is a pupillary-reflex tracking device that uses pupil + iris diameter, ratio, and pupillary constriction rate to assist physicians in diagnosing neurological conditions ranging from concussions to Multiple Sclerosis.',
+      description: 'MPupil is a pupillary-reflex tracking device that uses pupil + iris diameter, ratio, and pupillary constriction rate to assist physicians in diagnosing neurological conditions...',
       skills: ['Python', 'OpenCV', 'Computer Vision'],
     },
-    {
-      title: 'HourlyCriticalityAnalyzer',
-      description:
-        'HourlyCriticalityAnalyzer is a data processing pipeline for the analysis of criticality in neural networks. The HourlyCriticalityAnalyzer workflow succeeded in extracting hourly neural criticality metrics from rat electrophysiological recordings, revealing a circadian rhythmicity behind neural criticality in the rat hippocampus, which will be presented as an abstract in the Society for Neurosciences upcoming annual conference in Washington DC.',
-      skills: ['Python', 'Data Analysis', 'Electrophysiology'],
-    },
-    {
-      title: 'Michigan Brain Bee',
-      description:
-        'The Brain Bee is an international neuroscience competition for high school students. Since competing at the National Brain Bee back when I was a freshman in high school is what inspired me to go into neuroscience, I decided to establish the University of Michigan\'s first Brain Bee chapter to give local students the opportunity to compete in the Brain Bee that I had. As founder and president of the Michigan Brain Bee Committee, I led five subcommittees totaling ~40 undergraduate/graduate students in hosting the first and second annual Michigan Brain Bees in 2022 and 2023, respectively, pulling over 250 total attendees and managing ~$10K in funding.',
-      skills: ['Leadership', 'Communication', 'Project Management'],
-      website: 'https://sites.google.com/umich.edu/brainbee',
-    },
+    // Add more projects here...
   ]);
 
-  // Define a color mapping for skills
+  const [expandedProject, setExpandedProject] = useState(null);
+
   const skillColors = {
-    MATLAB: 'bg-gradient-to-r from-red-500 to-pink-500',
-    'Signal Processing': 'bg-gradient-to-r from-cyan-500 to-blue-500',
-    Clustering: 'bg-gradient-to-r from-green-500 to-lime-500',
-    Python: 'bg-gradient-to-r from-purple-500 to-indigo-500',
-    OpenCV: 'bg-gradient-to-r from-yellow-500 to-amber-500',
-    'Computer Vision': 'bg-gradient-to-r from-blue-500 to-cyan-500',
-    'Data Analysis': 'bg-gradient-to-r from-pink-500 to-purple-500',
-    Electrophysiology: 'bg-gradient-to-r from-lime-500 to-green-500',
-    Leadership: 'bg-gradient-to-r from-orange-500 to-red-500',
-    Communication: 'bg-gradient-to-r from-teal-500 to-green-500',
-    'Project Management': 'bg-gradient-to-r from-blue-500 to-purple-500',
+    MATLAB: 'bg-blue-100 text-blue-800',
+    'Signal Processing': 'bg-green-100 text-green-800',
+    Clustering: 'bg-yellow-100 text-yellow-800',
+    Python: 'bg-purple-100 text-purple-800',
+    OpenCV: 'bg-red-100 text-red-800',
+    'Computer Vision': 'bg-indigo-100 text-indigo-800',
+    'Data Analysis': 'bg-pink-100 text-pink-800',
+    Electrophysiology: 'bg-teal-100 text-teal-800',
+    Leadership: 'bg-orange-100 text-orange-800',
+    Communication: 'bg-cyan-100 text-cyan-800',
+    'Project Management': 'bg-lime-100 text-lime-800',
   };
 
   return (
-    <div name="projects" className="min-h-screen w-full bg-gradient-to-b from-black via-black to-gray-800 text-white">
-      <div className="max-w-screen-lg p-4 mx-auto">
-        <h1 className="text-4xl font-bold text-center py-8">My Projects</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div name="projects" className="min-h-screen w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.h1 
+          className="text-4xl font-bold text-center mb-16 text-gray-800"
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          My Projects
+        </motion.h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {projects.map((project, index) => (
-            <div
+            <motion.div
               key={index}
-              className="bg-gray-900 hover:bg-gray-800 shadow-lg hover:shadow-xl rounded-lg overflow-hidden border border-gray-600 transition-transform transform hover:scale-105"
+              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <div className="p-6">
-                <h2 className="text-2xl font-semibold text-blue-500 mb-2 text-white">
+                <h2 className="text-2xl font-semibold mb-3 text-gray-800">
                   {project.title}
                 </h2>
-                <p className="text-gray-400 mb-4 text-white">{project.description}</p>
-                <div className="flex flex-wrap">
+                <motion.div 
+                  className={`text-gray-600 mb-4 ${expandedProject === index ? '' : 'line-clamp-3'}`}
+                  initial={false}
+                  animate={{ height: expandedProject === index ? 'auto' : '4.5em' }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {project.description}
+                </motion.div>
+                <button 
+                  onClick={() => setExpandedProject(expandedProject === index ? null : index)}
+                  className="text-blue-600 hover:text-blue-800 transition-colors duration-200 flex items-center mb-4"
+                >
+                  {expandedProject === index ? 'Read less' : 'Read more'}
+                  <ChevronDown className={`ml-1 transform transition-transform duration-200 ${expandedProject === index ? 'rotate-180' : ''}`} size={16} />
+                </button>
+                <div className="flex flex-wrap mb-4">
                   {project.skills.map((skill, skillIndex) => (
                     <span
                       key={skillIndex}
-                      className={`px-3 py-1 mb-2 mr-2 rounded-full text-sm ${skillColors[skill]}`}
+                      className={`px-3 py-1 mb-2 mr-2 rounded-full text-xs font-medium ${skillColors[skill]}`}
                     >
                       {skill}
                     </span>
                   ))}
                 </div>
-                {project.website && (
-                  <div className="text-center mt-4 text-xl">
+                <div className="flex justify-start space-x-4 items-center">
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 transition-colors duration-200 flex items-center"
+                    >
+                      <Github size={20} className="mr-2" />
+                      GitHub
+                    </a>
+                  )}
+                  {project.website && (
                     <a
                       href={project.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-500 hover:underline"
+                      className="text-blue-600 hover:text-blue-800 transition-colors duration-200 flex items-center"
                     >
-                      Click here to learn more!
+                      <ExternalLink size={20} className="mr-2" />
+                      Learn More
                     </a>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -91,4 +122,4 @@ export const Projects = () => {
   );
 };
 
-
+export default Projects;

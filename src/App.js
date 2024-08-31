@@ -5,7 +5,7 @@ import { Projects } from "./components/Projects"
 
 function App() {
   return (
-    <div>
+    <div className="min-h-screen w-full bg-gradient-to-br from-cyan-50 to-blue-100">
       <NavBar />
       <Home />
       <Skills />
@@ -14,6 +14,5 @@ function App() {
   );
 }
 
-export default App;
 
-//https://www.youtube.com/watch?v=LpZrAjU6Hhk&ab_channel=YashPatel
+export default App;

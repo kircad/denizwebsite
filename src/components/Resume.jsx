@@ -9,7 +9,7 @@ const PdfViewer = () => {
         title="PDF Viewer"
         src={pdfUrl}
         width="100%"
-        height="500px" // Adjust the height as needed
+        height="500px"
         frameBorder="0"
       >
         This browser does not support PDFs. Please download the PDF to view it.
