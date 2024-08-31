@@ -1,24 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Document, Page, pdfjs } from 'react-pdf';
+
+// TODO MAKE THIS DISPLAY IN BROWSER INSTEAD OF DIRECT DOWNLOAD!!
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const PdfViewer = () => {
+  const [numPages, setNumPages] = useState(null);
   const pdfUrl = '../assets/resume.pdf';
+
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+  }
 
   return (
     <div className="pdf-container">
-      <iframe
-        title="PDF Viewer"
-        src={pdfUrl}
-        width="100%"
-        height="500px"
-        frameBorder="0"
+      <Document
+        file={pdfUrl}
+        onLoadSuccess={onDocumentLoadSuccess}
+        options={{ workerSrc: '/pdf.worker.js' }}
       >
-        This browser does not support PDFs. Please download the PDF to view it.
-      </iframe>
+        {Array.from(new Array(numPages), (el, index) => (
+          <Page key={`page_${index + 1}`} pageNumber={index + 1} width={600} />
+        ))}
+      </Document>
     </div>
   );
 };
 
 export default PdfViewer;
-
-
-
