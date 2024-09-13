@@ -104,14 +104,14 @@ const SkillSection = ({ title, skills }) => {
 
 export const Skills = () => {
   const languages = [
-    { id: 1, src: htmlImage, title: 'HTML', style: 'shadow-orange-500' },
-    { id: 2, src: css, title: 'CSS', style: 'shadow-blue-500' },
-    { id: 3, src: js, title: 'JavaScript', style: 'shadow-yellow-500' },
-    { id: 4, src: cpp, title: 'C++', style: 'shadow-blue-600' },
-    { id: 5, src: c, title: 'C', style: 'shadow-blue-600' },
-    { id: 6, src: python, title: 'Python', style: 'shadow-yellow-500' },
-    { id: 7, src: matlab, title: 'MATLAB', style: 'shadow-orange-500' },
-    { id: 8, src: sql, title: 'SQL', style: 'shadow-orange-500' },
+    { id: 1, src: python, title: 'Python', style: 'shadow-yellow-500' },
+    { id: 2, src: cpp, title: 'C++', style: 'shadow-blue-600' },
+    { id: 3, src: c, title: 'C', style: 'shadow-blue-600' },
+    { id: 4, src: js, title: 'JavaScript', style: 'shadow-yellow-500' },
+    { id: 5, src: matlab, title: 'MATLAB', style: 'shadow-orange-500' },
+    { id: 6, src: sql, title: 'SQL', style: 'shadow-orange-500' },
+    { id: 7, src: htmlImage, title: 'HTML', style: 'shadow-orange-500' },
+    { id: 8, src: css, title: 'CSS', style: 'shadow-blue-500' },
   ];
 
   const toolsFrameworks = [
