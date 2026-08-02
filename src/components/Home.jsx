@@ -1,126 +1,84 @@
-import React, { useState, useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
-import { MdArrowRightAlt, MdCode, MdScience } from 'react-icons/md';
+'use client';
+
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Github, Linkedin } from 'lucide-react';
 import me from '../assets/headshot.jpg';
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      delayChildren: 0.1,
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 16, opacity: 0 },
+  visible: { y: 0, opacity: 1 },
+};
+
 export const Home = () => {
-  const controls = useAnimation();
-  const [imageLoaded, setImageLoaded] = useState(false);
-
-  useEffect(() => {
-    if (imageLoaded) {
-      controls.start('visible');
-    }
-  }, [imageLoaded, controls]);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        delayChildren: 0.3,
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1
-    }
-  };
-
   return (
-    <div name="home" className="min-h-screen w-full">
+    <div className="min-h-screen w-full">
       <motion.div
-        className="max-w-screen-xl mx-auto flex flex-col lg:flex-row items-center justify-center h-full px-4 py-16"
+        className="max-w-screen-xl mx-auto flex flex-col lg:flex-row items-center justify-center min-h-screen px-4 py-16 gap-10 lg:gap-16"
         variants={containerVariants}
         initial="hidden"
-        animate={controls}
+        animate="visible"
       >
-        <motion.div
-          className="relative w-full max-w-md lg:w-1/2 mb-12 lg:mb-0"
-          variants={itemVariants}
-        >
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-cyan-300 to-blue-500 rounded-full blur-3xl opacity-30"
-            animate={{
-              scale: [1, 1.1, 1],
-              rotate: [0, 5, 0],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              repeatType: "reverse"
-            }}
-          />
-          <motion.img
-            src={me}
+        <motion.div className="w-full max-w-[16rem] sm:max-w-[22rem] shrink-0 lg:w-1/3" variants={itemVariants}>
+          <img
+            src={me.src}
+            width={me.width}
+            height={me.height}
             alt="Deniz Kirca"
-            className="rounded-full w-full h-full object-cover relative z-10 shadow-2xl"
-            variants={itemVariants}
-            onLoad={() => setImageLoaded(true)}
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 300 }}
+            className="rounded-full w-full h-auto object-cover shadow-xl"
           />
         </motion.div>
 
-        <motion.div
-          className="flex flex-col justify-center lg:text-left h-full lg:ml-12 relative z-10"
-          variants={itemVariants}
-        >
-          <motion.h2
-            className="text-6xl sm:text-7xl font-bold text-gray-800 mb-4"
+        <motion.div className="flex flex-col justify-center max-w-2xl" variants={itemVariants}>
+          <motion.h1
+            className="font-display text-4xl sm:text-5xl font-bold text-gray-800 mb-6"
             variants={itemVariants}
           >
-            Hi, I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-600">Deniz!</span>
-          </motion.h2>
-          <motion.p
-            className="text-2xl text-gray-600 font-main py-4 max-w-md"
-            variants={itemVariants}
-          >
-            I'm a senior studying{' '}
-            <motion.span
-              className="font-semibold text-cyan-600 inline-flex items-center"
-              whileHover={{ scale: 1.1 }}
-            >
-              <MdScience className="mr-1" /> neuroscience
-            </motion.span>{' '}
-            and{' '}
-            <motion.span
-              className="font-semibold text-blue-600 inline-flex items-center"
-              whileHover={{ scale: 1.1 }}
-            >
-              <MdCode className="mr-1" /> computer science
-            </motion.span>{' '}
-            at the University of Michigan.
+            I build{' '}
+            <span className="text-cyan-700">LLM inference infrastructure</span>.
+          </motion.h1>
+          <motion.p className="text-xl text-gray-600 font-main mb-4" variants={itemVariants}>
+            I&rsquo;m a software engineer at MathWorks, working on the LLM
+            platform behind MATLAB, Simulink, and Polyspace Copilot.
           </motion.p>
-          <motion.div variants={itemVariants}>
+          <motion.p className="text-base text-gray-600 font-main" variants={itemVariants}>
+            Before MathWorks, I studied computer science and neuroscience at the
+            University of Michigan and spent four years doing computational
+            neuroscience research.
+          </motion.p>
+          <motion.div className="flex flex-wrap items-center gap-4 mt-8" variants={itemVariants}>
             <motion.a
-              href={process.env.PUBLIC_URL + '/resume.pdf'}
-              download="Deniz_Kirca_Resume.pdf"
-              className="group inline-flex items-center px-6 py-3 mt-8 text-lg font-semibold text-white bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              href="https://github.com/kircad"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center px-5 py-2.5 font-semibold text-white bg-cyan-700 rounded-full shadow hover:bg-cyan-800 transition-colors duration-200"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
             >
-              Download Resume
-              <motion.span
-                className="ml-2"
-                initial={{ x: 0 }}
-                animate={{ x: 5 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 700,
-                  damping: 30,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                  duration: 0.5
-                }}
-              >
-                <MdArrowRightAlt size={25} />
-              </motion.span>
+              <Github size={20} className="mr-2" aria-hidden="true" />
+              GitHub
+            </motion.a>
+            <motion.a
+              href="https://www.linkedin.com/in/deniz-kirca-b000b9190/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              className="p-3 rounded-full bg-white text-gray-700 shadow hover:text-cyan-700 transition-colors duration-200"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              <Linkedin size={22} aria-hidden="true" />
             </motion.a>
           </motion.div>
         </motion.div>

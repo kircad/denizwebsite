@@ -1,106 +1,122 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-scroll';
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Mail, ChevronRight } from 'lucide-react';
+import { Menu, X, Mail } from 'lucide-react';
+
+const email = 'kircad20@gmail.com';
+const mailto = `mailto:${email}?subject=${encodeURIComponent('Hello from denizkirca.com')}`;
+
+const links = [
+  { id: 'home', label: 'Home' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'skills', label: 'Skills' },
+];
 
 export const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeLink, setActiveLink] = useState('home');
-
-  const email = 'kirca@umich.edu';
-
-  const links = [
-    { id: 1, link: 'home', label: 'Home' },
-    { id: 2, link: 'Skills', label: 'Skills' },
-    { id: 3, link: 'projects', label: 'Projects' },
-  ];
+  const navRef = useRef(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const variants = {
-    hidden: { opacity: 0, y: -100 },
-    visible: { opacity: 1, y: 0 },
-  };
+  // Track which section is in view so the active pill follows scroll.
+  useEffect(() => {
+    const sections = links
+      .map(({ id }) => document.getElementById(id))
+      .filter(Boolean);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActiveLink(visible.target.id);
+      },
+      { rootMargin: '-40% 0px -50% 0px' }
+    );
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
 
-  const itemVariants = {
-    hidden: { opacity: 0, x: -50 },
-    visible: { opacity: 1, x: 0 },
-  };
+  // Close the mobile menu on Escape or on a click outside the nav.
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e) => e.key === 'Escape' && setIsOpen(false);
+    const onClick = (e) => {
+      if (navRef.current && !navRef.current.contains(e.target)) setIsOpen(false);
+    };
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('pointerdown', onClick);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('pointerdown', onClick);
+    };
+  }, [isOpen]);
 
   return (
     <motion.nav
-      initial="hidden"
-      animate="visible"
-      variants={variants}
+      ref={navRef}
+      initial={{ opacity: 0, y: -24 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ type: 'spring', stiffness: 120, damping: 20 }}
       className={`fixed w-full z-20 transition-all duration-300 ${
-        scrolled ? 'bg-white shadow-lg' : 'bg-transparent'
+        scrolled || isOpen ? 'bg-white shadow-lg' : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
+          <a
+            href="#home"
+            className="font-display text-2xl sm:text-3xl font-semibold text-gray-800 hover:text-cyan-700 transition-colors duration-300"
           >
-            <h1 className="text-3xl sm:text-4xl font-signature text-gray-800 hover:text-indigo-600 transition-colors duration-300">
-              Deniz Kirca
-            </h1>
-          </motion.div>
+            Deniz Kirca
+          </a>
 
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
-              {links.map(({ id, link, label }) => (
-                <Link
+              {links.map(({ id, label }) => (
+                <a
                   key={id}
-                  to={link}
-                  smooth
-                  duration={500}
-                  className={`px-3 py-2 rounded-md text-sm font-medium cursor-pointer transition-all duration-300 ${
-                    activeLink === link
-                      ? 'text-indigo-600 bg-indigo-100'
-                      : 'text-gray-600 hover:text-indigo-600 hover:bg-indigo-50'
+                  href={`#${id}`}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
+                    activeLink === id
+                      ? 'text-cyan-700 bg-cyan-50'
+                      : 'text-gray-600 hover:text-cyan-700 hover:bg-cyan-50'
                   }`}
-                  onClick={() => setActiveLink(link)}
+                  onClick={() => setActiveLink(id)}
                 >
-                  <motion.span
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    {label}
-                  </motion.span>
-                </Link>
+                  {label}
+                </a>
               ))}
-              <motion.a
-                href={`mailto:${email}`}
-                className="text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors flex items-center"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <a
+                href={mailto}
+                className="text-gray-600 hover:text-cyan-700 px-3 py-2 rounded-md text-sm font-medium transition-colors inline-flex items-center"
               >
-                <Mail className="w-4 h-4 mr-2" />
+                <Mail className="w-4 h-4 mr-2" aria-hidden="true" />
                 Contact Me
-              </motion.a>
+              </a>
             </div>
           </div>
 
           <div className="md:hidden">
-            <motion.button
+            <button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-indigo-600 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
+              aria-label={isOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isOpen}
+              aria-controls="mobile-menu"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-cyan-700 hover:bg-cyan-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-600"
             >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </motion.button>
+              {isOpen ? (
+                <X className="h-6 w-6" aria-hidden="true" />
+              ) : (
+                <Menu className="h-6 w-6" aria-hidden="true" />
+              )}
+            </button>
           </div>
         </div>
       </div>
@@ -108,49 +124,34 @@ export const NavBar = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            id="mobile-menu"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden"
+            transition={{ duration: 0.25 }}
+            className="md:hidden overflow-hidden"
           >
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
-              {links.map(({ id, link, label }) => (
-                <motion.div
+              {links.map(({ id, label }) => (
+                <a
                   key={id}
-                  variants={itemVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                  transition={{ duration: 0.3, delay: id * 0.1 }}
+                  href={`#${id}`}
+                  className="text-gray-600 hover:text-cyan-700 hover:bg-cyan-50 block px-3 py-2 rounded-md text-base font-medium transition-colors"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setActiveLink(id);
+                  }}
                 >
-                  <Link
-                    to={link}
-                    smooth
-                    duration={500}
-                    className="text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 block px-3 py-2 rounded-md text-base font-medium cursor-pointer transition-colors flex items-center justify-between"
-                    onClick={() => {
-                      setIsOpen(false);
-                      setActiveLink(link);
-                    }}
-                  >
-                    {label}
-                    <ChevronRight className="w-4 h-4" />
-                  </Link>
-                </motion.div>
+                  {label}
+                </a>
               ))}
-              <motion.a
-                href={`mailto:${email}`}
-                className="text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 block px-3 py-2 rounded-md text-base font-medium cursor-pointer transition-colors flex items-center justify-between"
-                variants={itemVariants}
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
-                transition={{ duration: 0.3, delay: links.length * 0.1 }}
+              <a
+                href={mailto}
+                className="text-gray-600 hover:text-cyan-700 hover:bg-cyan-50 px-3 py-2 rounded-md text-base font-medium transition-colors flex items-center justify-between"
               >
                 Contact Me
-                <Mail className="w-4 h-4" />
-              </motion.a>
+                <Mail className="w-4 h-4" aria-hidden="true" />
+              </a>
             </div>
           </motion.div>
         )}

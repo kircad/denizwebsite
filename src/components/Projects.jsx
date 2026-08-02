@@ -1,112 +1,168 @@
-import React, { useState } from 'react';
-import { Github, ExternalLink, ChevronDown } from 'lucide-react';
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
+import { Github, ExternalLink, ChevronDown, Play } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-export const Projects = () => {
-  const [projects] = useState([
-    {
-      title: 'NeuroZIP',
-      description: "NeuroZIP is an innovative Python package designed to address the critical challenge of spike-sorting in large-scale, multiday electrophysiology datasets. NeuroZIP significantly enhances the efficiency of contemporary spike-sorting algorithms, achieving up to a 40% increase in processing speed while maintaining high accuracy. This performance increase is accomplished through a combination of dimensionality reduction techniques (PCA and UMAP) and unsupervised machine learning algorithms (k-means++ and DBSCAN) to dynamically subsample electrophysiology recordings. The package's effectiveness has been rigorously validated using a custom-built Python testing suite, which evaluates performance across various dataset sizes and complexities. I will be presenting NeuroZIP's capabilities and its potential to accelerate neuroscience research at the 2024 Society for Neuroscience conference in Chicago this October.",
-      skills: ['MATLAB', 'Python', 'Agile Development', 'Clustering', 'Big Data'],
-      github: 'https://github.com/kircad/NeuroZIP',
-    },
-    {
-      title: 'SideKick',
-      description: 'SideKick is a Chrome extension utilizing the Gemini 1.5 API for real-time sentiment analysis. SideKick can track emotional states, engagement, and knowledge transfer of up to five meeting participants. Winner of the Google Spotlight Award for Workplace Integration at MHacks x Google 2024',
-      skills: ['Python', 'API', 'Prompt Engineering'],
-      github: 'https://github.com/kircad/SideKick',
-    },
-    {
-      title: 'MPupil',
-      description: 'MPupil is a tool for physicians to help diagnose neurological conditions ranging from concussions to Multiple Sclerosis. I leveraged computer vision tools from the OpenCV library to create a pupil tracker that can detect pupil-to-iris ratio with an accuracy of 95%.',
-      skills: ['Python', 'OpenCV', 'Computer Vision'],
-    },
-    {
-      title: 'University of Michigan Brain Bee',
-      description: 'As the founding president of the Michigan Brain Bee Committee, I spearheaded the organization of the inaugural and second annual Michigan Brain Bees in 2022 and 2023, pulling over 250 attendees. Leading a team of 40 students across five subcommittees, I managed a $5,000 annual budget, coordinated with university officials, and oversaw all aspects of event planning and execution. My role involved strategic outreach, including drafting communications to hundreds of high school teachers and personally presenting to science classrooms across Michigan. These efforts culminated in events attracting over 250 attendees, providing valuable neuroscience education and engagement opportunities for local high school students. This initiative was particularly meaningful to me, as participating in a Brain Bee as a high school freshman in 2016 inspired my own pursuit of neuroscience.',
-      skills: ['Leadership', 'Communication', 'Project Management'],
-      website: 'https://sites.google.com/umich.edu/brainbee',
-    },
-    {
-      title: 'HourlyCriticalityAnalyzer',
-      description:
-        'I built a data processing pipeline in Python and MATLAB to extract novel hourly neural criticality metrics from electrophysiology recordings of rat hippocampus, revealing circadian rhythmicity underlying critical dynamics in rat hippocampus. I presented the data from my work at the 2023 Society for Neuroscience annual conference in Washington DC.',
-      skills: ['Python', 'Data Analysis', 'Electrophysiology'],
-    },
-    // Add more projects here...
-  ]);
+const YouTubeFacade = ({ videoId, title, poster }) => {
+  const [playing, setPlaying] = useState(false);
+  const iframeRef = useRef(null);
 
-  const [expandedProject, setExpandedProject] = useState(null);
+  // Hand keyboard focus to the player once it replaces the poster button.
+  useEffect(() => {
+    if (playing) iframeRef.current?.focus();
+  }, [playing]);
 
-  const skillColors = {
-    MATLAB: 'bg-blue-100 text-blue-800',
-    'Big Data': 'bg-green-100 text-green-800',
-    Clustering: 'bg-yellow-100 text-yellow-800',
-    Python: 'bg-purple-100 text-purple-800',
-    OpenCV: 'bg-red-100 text-red-800',
-    'Computer Vision': 'bg-indigo-100 text-indigo-800',
-    'Data Analysis': 'bg-pink-100 text-pink-800',
-    Electrophysiology: 'bg-teal-100 text-teal-800',
-    Leadership: 'bg-orange-100 text-orange-800',
-    Communication: 'bg-cyan-100 text-cyan-800',
-    'Project Management': 'bg-lime-100 text-lime-800',
-    'Agile Development': 'bg-amber-100 text-amber-800',
-    'Prompt Engineering': 'bg-violet-100 text-violet-800',
-    API: 'bg-fuchsia-100 text-fuchsia-800'
-  };
+  if (playing) {
+    return (
+      <iframe
+        ref={iframeRef}
+        className="absolute inset-0 w-full h-full"
+        src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`}
+        title={`${title} demo`}
+        allow="autoplay; encrypted-media; picture-in-picture"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allowFullScreen
+      />
+    );
+  }
 
   return (
-    <div name="projects" className="min-h-screen w-full">
+    <button
+      onClick={() => setPlaying(true)}
+      aria-label={`Play ${title} demo video`}
+      className="absolute inset-0 w-full h-full group cursor-pointer"
+    >
+      <img
+        src={poster}
+        width={1280}
+        height={720}
+        loading="lazy"
+        alt={`${title} demo preview`}
+        className="w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
+      <motion.div
+        className="absolute inset-0 flex items-center justify-center"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <span className="flex items-center justify-center w-16 h-16 rounded-full bg-cyan-700 shadow-xl">
+          <Play size={28} className="text-white ml-1" fill="currentColor" aria-hidden="true" />
+        </span>
+      </motion.div>
+      <span className="absolute bottom-3 left-3 px-3 py-1 rounded-full text-xs font-medium bg-white/90 text-gray-800">
+        Watch the demo
+      </span>
+    </button>
+  );
+};
+
+const projects = [
+  {
+    title: 'LeapCode',
+    description:
+      'A technical interview platform where the candidate works through a real engineering problem together with an AI agent, instead of writing algorithms from memory on a whiteboard. Candidate and agent code runs in a Docker sandbox with no network access, dropped capabilities, and resource limits. The agent loop streams over SSE so the interviewer can see every tool call and how many tokens the candidate is using. Each problem has its own container image with pinned dependencies, and sessions are synced through server-side state with scoped JWTs.',
+    skills: ['AI Agents', 'Docker', 'Sandboxing', 'SSE', 'Security'],
+    video: 'epQ5_hgnAc8',
+    poster: '/leapcode-poster.jpg',
+  },
+  {
+    title: 'NeoSearch',
+    description:
+      'A distributed web search engine scaling past 100,000 pages. A Hadoop MapReduce pipeline computes TF-IDF across the crawl, combined with PageRank for result relevance, resolving queries in under a second. Deployed on AWS EC2 clusters with a React front end.',
+    skills: ['Distributed Systems', 'MapReduce', 'AWS'],
+  },
+  {
+    title: 'SideKick',
+    description:
+      'A Chrome extension that takes notes during meetings using the Gemini API — winner of the Google Spotlight Award for Workplace Integration at the Google x MHacks hackathon (2024). It can follow up to five participants at once and keeps track of who is engaged and who is contributing what.',
+    skills: ['LLM APIs', 'Chrome Extension', 'Prompt Engineering'],
+  },
+  {
+    title: 'NeuroZIP',
+    description:
+      'A Python package I wrote in my research lab for spike-sorting multiday electrophysiology recordings, which are usually too big to sort in a reasonable amount of time. It subsamples the recording using PCA/UMAP and k-means++/DBSCAN before sorting, so existing sorters run substantially faster without hurting accuracy. I presented it at the Society for Neuroscience conference in 2024.',
+    skills: ['Python', 'Clustering', 'Big Data'],
+  },
+  {
+    title: 'University of Michigan Brain Bee',
+    description:
+      'I started the UM Brain Bee, a neuroscience competition for Michigan high schoolers, and ran the first two of them. About 40 students helped organize and we drew over 250 attendees. The event is still held every year. I got into neuroscience because of a Brain Bee I competed in as a high school freshman, so this one matters to me.',
+    skills: ['Community', 'Neuroscience'],
+    website: 'https://sites.google.com/umich.edu/brainbee',
+  },
+];
+
+export const Projects = () => {
+  const [expandedProject, setExpandedProject] = useState(null);
+
+  return (
+    <div className="w-full py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.h1 
-          className="text-4xl font-bold text-center mb-16 text-gray-800"
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
+        <motion.h2
+          className="font-display text-4xl font-bold text-center mb-16 text-gray-800"
+          initial={{ opacity: 0, y: -30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          My Projects
-        </motion.h1>
-        <motion.p
-          className="text-xl text-center mb-16 text-gray-600"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          Project demos coming soon!
-        </motion.p>
+          Projects
+        </motion.h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {projects.map((project, index) => (
             <motion.div
-              key={index}
-              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              key={project.title}
+              className={`bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 ${
+                project.video ? 'md:col-span-2 md:grid md:grid-cols-2' : ''
+              }`}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.5, delay: (index % 2) * 0.1 }}
             >
+              {project.video && (
+                <div className="relative aspect-video md:aspect-auto md:h-full md:min-h-[16rem]">
+                  <YouTubeFacade
+                    videoId={project.video}
+                    title={project.title}
+                    poster={project.poster}
+                  />
+                </div>
+              )}
               <div className="p-6">
-                <h2 className="text-2xl font-semibold mb-3 text-gray-800">
+                <h3 className="font-display text-2xl font-semibold mb-3 text-gray-800">
                   {project.title}
-                </h2>
-                <motion.div 
-                  className={`text-gray-600 mb-4 ${expandedProject === index ? '' : 'line-clamp-3'}`}
-                  initial={false}
-                  animate={{ height: expandedProject === index ? 'auto' : '4.5em' }}
-                  transition={{ duration: 0.3 }}
+                </h3>
+                <p
+                  className={`text-gray-600 mb-4 ${
+                    project.video || expandedProject === index ? '' : 'line-clamp-3'
+                  }`}
                 >
                   {project.description}
-                </motion.div>
-                <button 
-                  onClick={() => setExpandedProject(expandedProject === index ? null : index)}
-                  className="text-blue-600 hover:text-blue-800 transition-colors duration-200 flex items-center mb-4"
-                >
-                  {expandedProject === index ? 'Read less' : 'Read more'}
-                  <ChevronDown className={`ml-1 transform transition-transform duration-200 ${expandedProject === index ? 'rotate-180' : ''}`} size={16} />
-                </button>
-                <div className="flex flex-wrap mb-4">
-                  {project.skills.map((skill, skillIndex) => (
+                </p>
+                {!project.video && (
+                  <button
+                    onClick={() =>
+                      setExpandedProject(expandedProject === index ? null : index)
+                    }
+                    className="text-cyan-700 hover:text-cyan-900 transition-colors duration-200 flex items-center mb-4"
+                  >
+                    {expandedProject === index ? 'Read less' : 'Read more'}
+                    <ChevronDown
+                      className={`ml-1 transform transition-transform duration-200 ${
+                        expandedProject === index ? 'rotate-180' : ''
+                      }`}
+                      size={16}
+                      aria-hidden="true"
+                    />
+                  </button>
+                )}
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {project.skills.map((skill) => (
                     <span
-                      key={skillIndex}
-                      className={`px-3 py-1 mb-2 mr-2 rounded-full text-xs font-medium ${skillColors[skill]}`}
+                      key={skill}
+                      className="px-3 py-1 rounded-full text-xs font-medium text-gray-700 bg-gray-50 border border-gray-200"
                     >
                       {skill}
                     </span>
@@ -118,9 +174,9 @@ export const Projects = () => {
                       href={project.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-800 transition-colors duration-200 flex items-center"
+                      className="text-cyan-700 hover:text-cyan-900 transition-colors duration-200 flex items-center"
                     >
-                      <Github size={20} className="mr-2" />
+                      <Github size={20} className="mr-2" aria-hidden="true" />
                       GitHub
                     </a>
                   )}
@@ -129,9 +185,9 @@ export const Projects = () => {
                       href={project.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-800 transition-colors duration-200 flex items-center"
+                      className="text-cyan-700 hover:text-cyan-900 transition-colors duration-200 flex items-center"
                     >
-                      <ExternalLink size={20} className="mr-2" />
+                      <ExternalLink size={20} className="mr-2" aria-hidden="true" />
                       Learn More
                     </a>
                   )}
