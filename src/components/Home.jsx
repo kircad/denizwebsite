@@ -46,7 +46,7 @@ export const Home = () => {
             variants={itemVariants}
           >
             I build{' '}
-            <span className="text-cyan-700">LLM inference infrastructure</span>.
+            <span className="text-cyan-700">AI gateway infrastructure</span>.
           </motion.h1>
           <motion.p className="text-xl text-gray-600 font-main mb-4" variants={itemVariants}>
             I&rsquo;m a software engineer at MathWorks, working on the LLM
